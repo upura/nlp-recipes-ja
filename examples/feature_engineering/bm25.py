@@ -10,18 +10,17 @@ from utils_nlp.dataset.livedoor import load_pandas_df
 
 
 class BM25Transformer(BaseEstimator, TransformerMixin):
-    """
-    Parameters
-    ----------
-    use_idf : boolean, optional (default=True)
-    k1 : float, optional (default=2.0)
-    b  : float, optional (default=0.75)
-    References
-    ----------
-    Okapi BM25: a non-binary model - Introduction to Information Retrieval
-    http://nlp.stanford.edu/IR-book/html/htmledition/okapi-bm25-a-non-binary-model-1.html
-    """
+
     def __init__(self, use_idf=True, k1=2.0, b=0.75):
+        """Okapi BM25: a non-binary model - Introduction to Information Retrieval
+        http://nlp.stanford.edu/IR-book/html/htmledition/okapi-bm25-a-non-binary-model-1.html.
+        Implementation from https://github.com/arosh/BM25Transformer.
+
+        Args:
+            use_idf (bool, optional): [description]. Defaults to True.
+            k1 (float, optional): [description]. Defaults to 2.0.
+            b (float, optional): [description]. Defaults to 0.75.
+        """
         self.use_idf = use_idf
         self.k1 = k1
         self.b = b
