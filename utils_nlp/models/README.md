@@ -7,4 +7,5 @@ The following table summarizes each submodule.
 
 |Submodule|Description|
 |---|---|
-|[pretrained embeddings](./pretrained_embeddings) | This submodule provides utilities to download and extract pretrained word embeddings trained with Word2Vec, GloVe, fastText methods.|
+|[SWEM](swem.py) | Create swem-max and swem-mean vectors|
+|[SCDV](scdv.py) | Create scdv vectors|
