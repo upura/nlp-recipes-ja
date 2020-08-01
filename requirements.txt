@@ -1,4 +1,5 @@
 allennlp==v1.0.0
+bert-score==0.2.3
 ja-sentence-segmenter==0.0.2
 japanize-matplotlib==1.1.2
 konoha[all]==4.5.0
