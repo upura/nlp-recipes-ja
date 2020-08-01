@@ -3,7 +3,7 @@
 This folder contains examples, for building Natural Language Processing systems for the following scenarios.
 
 |Category|Methods|
-|---| --- | --- |
+|---| --- |
 |[Basic](basic)|Normalization, Sentence Segmantation, Ruby|
 |[Embeddings](embeddings)|Word2Vec|
 |[Sentence Similarity](sentence_similarity)|Cosine Similarity, BERTScore|
