@@ -1,4 +1,5 @@
 data/livedoor
+data/word2vec
 *.gz
 *.csv
 
