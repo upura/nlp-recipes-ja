@@ -47,7 +47,7 @@ def preprocess_data(df):
     X_train = pd.DataFrame(tf_idf_train.toarray())
     X_test = pd.DataFrame(tf_idf_test.toarray())
 
-    return X_train, X_test, y_train, y_test
+    return X_train.reset_index(drop=True), X_test.reset_index(drop=True), y_train, y_test
 
 
 if __name__ == '__main__':
