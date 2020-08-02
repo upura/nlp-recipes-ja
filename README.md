@@ -1,4 +1,4 @@
-# NLP Recipes for Japansese
+# NLP Recipes for Japanese
 
 This repository contains samples codes for natural language processing in Japanese.
 It's highly inspired by [microsoft/nlp-recipes](https://github.com/microsoft/nlp-recipes).
