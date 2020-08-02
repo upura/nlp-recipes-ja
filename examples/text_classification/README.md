@@ -15,3 +15,4 @@ https://github.com/microsoft/nlp-recipes/blob/master/examples/text_classificatio
 |---|---|---|
 |[TF-IDF & Logistic Regression](tfidf_logistic_regression.py)|Local| [Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) with TF-IDF vectors |
 |[TF-IDF & LightGBM](tfidf_lgbm.py)|Local| [LightGBM](https://github.com/microsoft/LightGBM) with TF-IDF vectors |
+|[BERT](run_bert.py)|Local| [Transformers BERT](https://github.com/huggingface/transformers) |
