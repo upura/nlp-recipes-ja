@@ -1,6 +1,6 @@
 # Visualization
 
-This folder contains examples for visualization of Japanese texts.
+This folder contains examples for visualization with Japanese texts.
 
 ## Summary
 
