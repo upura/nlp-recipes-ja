@@ -1,9 +1,11 @@
 data/livedoor
 data/word2vec
+data/bert
 *.gz
 *.csv
 *.pkl
 *.log
+wandb
 
 # Created by https://www.gitignore.io/api/macos,python
 # Edit at https://www.gitignore.io/?templates=macos,python

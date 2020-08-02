@@ -1,8 +1,10 @@
 allennlp==v1.0.0
+catalyst==20.6.0
 ja-sentence-segmenter==0.0.2
 japanize-matplotlib==1.1.2
 konoha[all]==4.5.0
 loguru==0.5.1
+mecab-python3==0.996.5
 nagisa==0.2.7
 neologdn==0.4
 pykakasi==2.0.1
