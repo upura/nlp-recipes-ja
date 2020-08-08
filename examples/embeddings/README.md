@@ -18,3 +18,4 @@ There is a survey article titled "[学習済み日本語word2vecとその評価�
 |Notebook|Environment|Description| 
 |---|---|---|
 |[Word2vec](get_word2vec.py)|Local| Get [word2vec vectors pretrained by Japanese Wikipedia](https://qiita.com/Hironsan/items/513b9f93752ecee9e670) |
+|[Download Pre-trained Embeddings](download_embeddings.py)|Local| Download pre-trained embeddings by [chakin](https://github.com/chakki-works/chakin) |
