@@ -4,7 +4,7 @@ This folder contains examples, for building Natural Language Processing systems 
 
 |Category|Methods|
 |---| --- |
-|[Basic](basic)|Normalization, Sentence Segmantation, Ruby|
+|[Basic](basic)|Cleaning, Normalization, Stopwords, Sentence Segmantation, Ruby|
 |[Embeddings](embeddings)|Word2Vec|
 |[Feature Engineering](feature_engineering)|Bag-of-Words, TF-IDF, BM25, SWEM, SCDV|
 |[Morphological Analysis](morphological_analysis)|Konoha, nagisa|
