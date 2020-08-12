@@ -10,7 +10,7 @@ The following is a summary of the commonly used NLP scenarios covered in the rep
 |Category|Methods|
 |---| --- |
 |[Basic](./examples/basic)|Cleaning, Normalization, Stopwords, Sentence Segmantation, Ruby|
-|[Embeddings](./examples/embeddings)|Word2Vec|
+|[Embeddings](./examples/embeddings)|Word2Vec, fastText|
 |[Feature Engineering](./examples/feature_engineering)|Bag-of-Words, TF-IDF, BM25, SWEM, SCDV|
 |[Morphological Analysis](./examples/morphological_analysis)|Konoha, nagisa|
 |[Sentence Similarity](./examples/sentence_similarity)|Cosine Similarity|
