@@ -10,10 +10,11 @@ The following is a summary of the commonly used NLP scenarios covered in the rep
 |Category|Methods|
 |---| --- |
 |[Basic](./examples/basic)|Cleaning, Normalization, Stopwords, Sentence Segmantation, Ruby|
-|[Embeddings](./examples/embeddings)|Word2Vec, fastText|
+|[Embeddings](./examples/embeddings)|Word2Vec, fastText, Universal Sentence Encoder|
 |[Feature Engineering](./examples/feature_engineering)|Bag-of-Words, TF-IDF, BM25, SWEM, SCDV|
 |[Morphological Analysis](./examples/morphological_analysis)|Konoha, nagisa|
 |[Sentence Similarity](./examples/sentence_similarity)|Cosine Similarity|
+|[Sentiment Analysis](sentiment_analysis)|oseti|
 |[Text Classification](./examples/text_classification)|TF-IDF & Logistic Regression, TF-IDF & LightGBM, BERT|
 |[Visualization](./examples/visualization)|Visualization with Japanese texts|
 
