@@ -20,3 +20,4 @@ There is a survey article titled "[学習済み日本語word2vecとその評価�
 |[Word2vec](get_word2vec.py)|Local| Get [word2vec vectors pretrained by Japanese Wikipedia](https://qiita.com/Hironsan/items/513b9f93752ecee9e670) |
 |[fastText](get_fasttext.py)|Local| Get [fastText vectors pretrained by Japanese Common Crawl](https://fasttext.cc/docs/en/crawl-vectors.html) |
 |[Download Pre-trained Embeddings](download_embeddings.py)|Local| Download pre-trained embeddings by [chakin](https://github.com/chakki-works/chakin) |
+|[Universal Sentence Encoder](get_use.py)|Local| Get [Universal Sentence Encoder](https://tfhub.dev/google/universal-sentence-encoder-multilingual/3) |
