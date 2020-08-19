@@ -8,4 +8,6 @@ loguru==0.5.1
 mecab-python3==0.996.5
 nagisa==0.2.7
 neologdn==0.4
+oseti==0.2
 pykakasi==2.0.1
+tensorflow-text==2.3.0
