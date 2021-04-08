@@ -14,7 +14,10 @@ class BertClassifier(torch.nn.Module):
         super().__init__()
         self.l1 = BertModel.from_pretrained(model_name)
         self.l2 = torch.nn.Dropout(0.3)
-        self.l3 = torch.nn.Linear(768, num_classes)
+        if 'large' in model_name:
+            self.l3 = torch.nn.Linear(1024, num_classes)
+        else:
+            self.l3 = torch.nn.Linear(768, num_classes)
 
     def forward(self, ids, attention_mask, token_type_ids):
         _, output_1 = self.l1(ids, attention_mask=attention_mask, token_type_ids=token_type_ids, return_dict=False)

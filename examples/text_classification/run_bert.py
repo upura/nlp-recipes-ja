@@ -1,3 +1,4 @@
+import argparse
 import sys
 
 import neologdn
@@ -33,7 +34,11 @@ def preprocess_data(df):
 
 if __name__ == '__main__':
 
-    MODEL_NAME = 'cl-tohoku/bert-base-japanese-v2'
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_name')
+    args = parser.parse_args()
+
+    MODEL_NAME = args.model_name
     MAX_LEN = 300
     pl.seed_everything(777)
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
