@@ -1,3 +1,5 @@
+import sys
+
 from konoha import WordTokenizer
 from loguru import logger
 import neologdn
@@ -10,6 +12,7 @@ from sklearn.metrics import log_loss
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from tqdm import tqdm
 
+sys.path.append('.')
 from utils_nlp.common.data import Data
 from utils_nlp.dataset.livedoor import load_pandas_df
 from utils_nlp.eval.classification import eval_classification
@@ -52,7 +55,7 @@ def preprocess_data(df):
 
 if __name__ == '__main__':
 
-    df = load_pandas_df(nrows=1000, shuffle=True)
+    df = load_pandas_df(shuffle=True)
     X_train, X_test, y_train, y_test = preprocess_data(df)
 
     RUN_NAME = 'logistic_regression'
@@ -64,35 +67,35 @@ if __name__ == '__main__':
     y_preds = []
     NUM_CLASS = 9
     oof_train = np.zeros((len(X_train), NUM_CLASS))
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=0)
+    cv = StratifiedKFold(n_splits=4, shuffle=True, random_state=0)
 
     for fold_id, (train_index, valid_index) in enumerate(tqdm(cv.split(X_train, y_train))):
+        if fold_id == 0:
+            X_tr = X_train.loc[train_index, :]
+            X_val = X_train.loc[valid_index, :]
+            y_tr = y_train[train_index]
+            y_val = y_train[valid_index]
 
-        X_tr = X_train.loc[train_index, :]
-        X_val = X_train.loc[valid_index, :]
-        y_tr = y_train[train_index]
-        y_val = y_train[valid_index]
+            model = LogisticRegression(penalty='l2', solver='sag', random_state=0)
+            model.fit(X_tr, y_tr)
+            Data.dump(model, f'data/{RUN_NAME}/model_{fold_id}.pkl')
 
-        model = LogisticRegression(penalty='l2', solver='sag', random_state=0)
-        model.fit(X_tr, y_tr)
-        Data.dump(model, f'data/{RUN_NAME}/model_{fold_id}.pkl')
+            oof_train[valid_index] = model.predict_proba(X_val)
+            score = log_loss(y_val, oof_train[valid_index])
+            logger.info(f'fold {fold_id}, log_loss: {score}')
 
-        oof_train[valid_index] = model.predict_proba(X_val)
-        score = log_loss(y_val, oof_train[valid_index])
-        logger.info(f'fold {fold_id}, log_loss: {score}')
-
-        y_pred = model.predict_proba(X_test)
-        y_preds.append(y_pred)
+            y_pred = model.predict_proba(X_test)
+            y_preds.append(y_pred)
 
     y_preds = np.mean(y_preds, axis=0)
     logger.info(f'test, log_loss: {log_loss(y_test, y_preds)}')
     result_dict = eval_classification(y_test, y_preds.argmax(axis=1))
     logger.info(str(result_dict))
     """
-    {'accuracy': 0.9,
-     'precision': [0.8182, 0.8929, 1.0, 1.0, 0.9, 0.8261, 0.9545, 0.8929, 0.9412],
-     'recall': [1.0, 1.0, 0.8636, 0.5882, 0.9, 0.8261, 1.0, 0.9615, 0.8421],
-     'f1': [0.9, 0.9434, 0.9268, 0.7407, 0.9, 0.8261, 0.9767, 0.9259, 0.8889]}
+    {'accuracy': 0.9308,
+     'precision': [0.8771, 0.96, 0.9639, 0.9412, 0.9198, 0.8678, 0.9771, 0.9309, 0.9517],
+     'recall': [0.9023, 0.9655, 0.9249, 0.7843, 0.9885, 0.8935, 0.9828, 0.9722, 0.8961],
+     'f1': [0.8895, 0.9628, 0.944, 0.8556, 0.9529, 0.8805, 0.9799, 0.9511, 0.9231]}
     """
 
     Data.dump(oof_train, f'data/{RUN_NAME}/oof_train.pkl')

@@ -1,6 +1,9 @@
+import argparse
+import sys
+
 import neologdn
 import numpy as np
-
+import pytorch_lightning as pl
 from sklearn import preprocessing
 from sklearn.metrics import log_loss
 from sklearn.model_selection import train_test_split, StratifiedKFold
@@ -8,14 +11,13 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from transformers.tokenization_bert_japanese import BertJapaneseTokenizer
+from transformers import BertTokenizer
 
-from utils_nlp.common.pytorch_utils import seed_everything
+sys.path.append('.')
 from utils_nlp.dataset.livedoor import load_pandas_df
 from utils_nlp.eval.classification import eval_classification
 from utils_nlp.models.nn.datasets import LivedoorDataset
-from utils_nlp.models.nn.runner import CustomRunner
-from utils_nlp.models.nn.models import BERTClass
+from utils_nlp.models.nn.models import PLBertClassifier
 
 
 def preprocess_data(df):
@@ -32,76 +34,56 @@ def preprocess_data(df):
 
 if __name__ == '__main__':
 
-    RUN_NAME = 'bert'
-    MAX_LEN = 20
-    seed_everything()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_name')
+    args = parser.parse_args()
+
+    MODEL_NAME = args.model_name
+    MAX_LEN = 300
+    pl.seed_everything(777)
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
-    df = load_pandas_df(nrows=1000, shuffle=True)
+    df = load_pandas_df(shuffle=True)
     X_train, X_test, y_train, y_test = preprocess_data(df)
 
-    tokenizer = BertJapaneseTokenizer.from_pretrained('cl-tohoku/bert-base-japanese')
+    tokenizer = BertTokenizer.from_pretrained(MODEL_NAME)
 
     test_dataset = LivedoorDataset(X_test, tokenizer, MAX_LEN)
-    test_loader = DataLoader(test_dataset, shuffle=False, batch_size=32)
+    test_loader = DataLoader(test_dataset, shuffle=False, batch_size=32, num_workers=4)
 
     y_preds = []
     NUM_CLASS = 9
     oof_train = np.zeros((len(X_train), NUM_CLASS))
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=0)
+    cv = StratifiedKFold(n_splits=4, shuffle=True, random_state=0)
 
     for fold_id, (train_index, valid_index) in enumerate(tqdm(cv.split(X_train, X_train['label']))):
+        if fold_id == 0:
+            X_tr = X_train.loc[train_index, :].reset_index(drop=True)
+            X_val = X_train.loc[valid_index, :].reset_index(drop=True)
+            y_tr = y_train[train_index]
+            y_val = y_train[valid_index]
 
-        X_tr = X_train.loc[train_index, :].reset_index(drop=True)
-        X_val = X_train.loc[valid_index, :].reset_index(drop=True)
-        y_tr = y_train[train_index]
-        y_val = y_train[valid_index]
+            train_dataset = LivedoorDataset(X_tr, tokenizer, MAX_LEN)
+            valid_dataset = LivedoorDataset(X_val, tokenizer, MAX_LEN)
 
-        train_dataset = LivedoorDataset(X_tr, tokenizer, MAX_LEN)
-        valid_dataset = LivedoorDataset(X_val, tokenizer, MAX_LEN)
+            train_loader = DataLoader(train_dataset, shuffle=True, batch_size=16, num_workers=4)
+            valid_loader = DataLoader(valid_dataset, shuffle=False, batch_size=32, num_workers=4)
 
-        train_loader = DataLoader(train_dataset, shuffle=True, batch_size=32)
-        valid_loader = DataLoader(valid_dataset, shuffle=False, batch_size=32)
+            model = PLBertClassifier(model_name=MODEL_NAME,
+                                     num_classes=NUM_CLASS)
+            device ='cuda:0' if torch.cuda.is_available() else 'cpu'
+            model = model.to(device)
+            trainer = pl.Trainer(gpus=1, max_epochs=7)
+            trainer.fit(model, train_loader, valid_loader)
+            trainer.test(test_dataloaders=test_loader)
 
-        loaders = {'train': train_loader, 'valid': valid_loader}
-        runner = CustomRunner(device=device)
-
-        model = BERTClass(NUM_CLASS)
-
-        criterion = nn.CrossEntropyLoss()
-        optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=30, eta_min=1e-6)
-
-        logdir = f'data/{RUN_NAME}/logdir_{RUN_NAME}/fold{fold_id}'
-        runner.train(
-            model=model,
-            criterion=criterion,
-            optimizer=optimizer,
-            scheduler=scheduler,
-            loaders=loaders,
-            logdir=logdir,
-            num_epochs=3,
-            verbose=True,
-        )
-
-        pred = np.concatenate(list(map(lambda x: x.cpu().numpy(),
-                                       runner.predict_loader(
-                                           loader=valid_loader,
-                                           resume=f'{logdir}/checkpoints/best.pth',
-                                           model=model,),)))
-
-        oof_train[valid_index] = pred
-        score = log_loss(y_val, oof_train[valid_index])
-        print('score', score)
-
-        y_pred = np.concatenate(list(map(lambda x: x.cpu().numpy(),
-                                         runner.predict_loader(
-                                         loader=test_loader,
-                                         resume=f'{logdir}/checkpoints/best.pth',
-                                         model=model,),)))
-        y_preds.append(y_pred)
-
-    y_preds = np.mean(y_preds, axis=0)
+    y_preds = np.load('data/bert/preds.npy')
     print(f'test, log_loss: {log_loss(y_test, y_preds)}')
     result_dict = eval_classification(y_test, y_preds.argmax(axis=1))
     print(result_dict)
+    """
+    {'accuracy': 0.9362,
+     'precision': [0.8939, 0.9101, 0.9588, 0.9293, 0.9451, 0.9241, 0.9822, 0.9882, 0.8935],
+     'recall': [0.9195, 0.931, 0.9422, 0.902, 0.9885, 0.8639, 0.954, 0.9333, 0.9805],
+     'f1': [0.9065, 0.9205, 0.9504, 0.9154, 0.9663, 0.893, 0.9679, 0.96, 0.935]}
+    """
