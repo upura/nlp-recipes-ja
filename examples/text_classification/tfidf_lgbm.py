@@ -67,7 +67,7 @@ if __name__ == '__main__':
     y_preds = []
     NUM_CLASS = 9
     oof_train = np.zeros((len(X_train), NUM_CLASS))
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=0)
+    cv = StratifiedKFold(n_splits=4, shuffle=True, random_state=0)
 
     params = {
         'objective': 'multiclass',
@@ -117,10 +117,10 @@ if __name__ == '__main__':
     result_dict = eval_classification(y_test, y_preds.argmax(axis=1))
     logger.info(str(result_dict))
     """
-    {'accuracy': 0.9559,
-     'precision': [0.9364, 0.9826, 0.9553, 0.9462, 0.9282, 0.8947, 1.0, 0.9886, 0.9677],
-     'recall': [0.931, 0.9713, 0.9884, 0.8627, 0.9655, 0.9053, 1.0, 0.9667, 0.974],
-     'f1': [0.9337, 0.9769, 0.9716, 0.9026, 0.9465, 0.9, 1.0, 0.9775, 0.9709]}
+    {'accuracy': 0.9512,
+     'precision': [0.9253, 0.9714, 0.9713, 0.9348, 0.9286, 0.8786, 1.0, 0.9831, 0.9608],
+     'recall': [0.9253, 0.977, 0.9769, 0.8431, 0.9713, 0.8994, 1.0, 0.9667, 0.9545],
+     'f1': [0.9253, 0.9742, 0.9741, 0.8866, 0.9494, 0.8889, 1.0, 0.9748, 0.9577]}
     """
 
     Data.dump(oof_train, f'data/{RUN_NAME}/oof_train.pkl')

@@ -1,13 +1,11 @@
-allennlp==v1.0.0
-catalyst==20.6.0
 chakin==0.0.8
 ja-sentence-segmenter==0.0.2
 japanize-matplotlib==1.1.2
 konoha[all]==4.6.1
 loguru==0.5.1
-mecab-python3==0.996.5
+mecab-python3==1.0.3
 nagisa==0.2.7
 neologdn==0.4
 oseti==0.2
 pykakasi==2.0.1
-tensorflow-text==2.3.0
+pytorch-lightning==1.2.7

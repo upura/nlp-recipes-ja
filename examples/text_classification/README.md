@@ -14,7 +14,7 @@ https://github.com/microsoft/nlp-recipes/blob/master/examples/text_classificatio
 |Notebook|Environment|Description|ACC|
 |---|---|---|---|
 |[TF-IDF & Logistic Regression](tfidf_logistic_regression.py)|Local| [Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) with TF-IDF vectors | 0.9308 |
-|[TF-IDF & LightGBM](tfidf_lgbm.py)|Local| [LightGBM](https://github.com/microsoft/LightGBM) with TF-IDF vectors | 0.9559 |
-|[BERT](run_bert.py)|Local| [Transformers BERT](https://github.com/huggingface/transformers) |
+|[TF-IDF & LightGBM](tfidf_lgbm.py)|Local| [LightGBM](https://github.com/microsoft/LightGBM) with TF-IDF vectors | 0.9512 |
+|[BERT](run_bert.py) 'cl-tohoku/bert-base-japanese-v2' |Local| [Transformers BERT](https://github.com/huggingface/transformers) | 0.9362 |
 
 Accuracy scores (ACC) are calculated by running code only in fold 0 in the condition that datasets are devided into train/val/test at the rate of 0.6/0.2/0.2.
