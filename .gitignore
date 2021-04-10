@@ -1,11 +1,14 @@
 data/livedoor
 data/word2vec
 data/fasttext
-data/bert
 *.gz
 *.csv
 *.pkl
 *.log
+*.model
+*.json
+*.bin
+*.npy
 wandb
 lightning_logs
 

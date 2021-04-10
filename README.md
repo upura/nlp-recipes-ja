@@ -15,7 +15,7 @@ The following is a summary of the commonly used NLP scenarios covered in the rep
 |[Morphological Analysis](./examples/morphological_analysis)|Konoha, nagisa|
 |[Sentence Similarity](./examples/sentence_similarity)|Cosine Similarity|
 |[Sentiment Analysis](sentiment_analysis)|oseti|
-|[Text Classification](./examples/text_classification)|TF-IDF & Logistic Regression, TF-IDF & LightGBM, BERT|
+|[Text Classification](./examples/text_classification)|TF-IDF & Logistic Regression, TF-IDF & LightGBM, BERT, T5|
 |[Visualization](./examples/visualization)|Visualization with Japanese texts|
 
 ## Environment
