@@ -17,5 +17,7 @@ https://github.com/microsoft/nlp-recipes/blob/master/examples/text_classificatio
 |[TF-IDF & LightGBM](tfidf_lgbm.py)|Local| [LightGBM](https://github.com/microsoft/LightGBM) with TF-IDF vectors | 0.9512 |
 |[BERT](run_bert.py) 'cl-tohoku/bert-base-japanese-v2' |Local| [Transformers BERT](https://github.com/huggingface/transformers) | 0.9362 |
 |[BERT](run_bert.py) 'cl-tohoku/bert-base-japanese-char-v2' |Local| [Transformers BERT](https://github.com/huggingface/transformers) | 0.9274 |
+|[BERT](run_bert.py) 'cl-tohoku/bert-base-large' |Local| [Transformers BERT](https://github.com/huggingface/transformers) | - |
+|[T5](run_t5.py) |Local| [T5 for japanese](https://qiita.com/sonoisa/items/a9af64ff641f0bbfed44) | 0.9566 |
 
 Accuracy scores (ACC) are calculated by running code only in fold 0 in the condition that datasets are devided into train/val/test at the rate of 0.6/0.2/0.2.
