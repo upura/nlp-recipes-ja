@@ -21,3 +21,4 @@ https://github.com/microsoft/nlp-recipes/blob/master/examples/text_classificatio
 |[T5](run_t5.py) |Local| [T5 for japanese](https://qiita.com/sonoisa/items/a9af64ff641f0bbfed44) | 0.9566 |
 
 Accuracy scores (ACC) are calculated by running code only in fold 0 in the condition that datasets are devided into train/val/test at the rate of 0.6/0.2/0.2.
+Be careful that the scores are highly affected by the way of splitting dataset and hyperparameters like the number of epochs.
