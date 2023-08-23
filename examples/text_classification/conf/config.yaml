@@ -1,0 +1,16 @@
+seed: 123
+experiment_name: text-classification
+model_name: bert-base-uncased
+params:
+  per_device_train_batch_size: 32
+  per_device_eval_batch_size: 32
+  learning_rate: 2e-5
+  lr_scheduler_type: linear
+  warmup_ratio: 0.1
+  num_train_epochs: 10
+  save_strategy: epoch
+  logging_strategy: epoch
+  evaluation_strategy: epoch
+  load_best_model_at_end: true
+  metric_for_best_model: accuracy
+  fp16: true
