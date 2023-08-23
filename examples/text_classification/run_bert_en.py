@@ -50,9 +50,8 @@ def main(cfg: DictConfig):
     mlflow_tags, mlflow_params, mlflow_metrics = dict(), dict(), dict()
     tmp_folder = tempfile.TemporaryDirectory()
     mlflow_tmp_folder = Path(tmp_folder.name)
-    mlflow_experiment_name = cfg.experiment_name
     mlflow.set_tracking_uri(HOME_PATH / "mlruns")
-    mlflow.set_experiment(mlflow_experiment_name)
+    mlflow.set_experiment(cfg.experiment_name)
 
     # dataset
     train_dataset = load_dataset("imdb", split="train").select([i for i in range(1000)])
