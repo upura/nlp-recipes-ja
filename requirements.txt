@@ -11,5 +11,6 @@ nagisa==0.2.7
 neologdn==0.5.2
 oseti==0.2
 pykakasi==2.0.1
+torch==2.0.1
 transformers==4.32.0
 tqdm==4.66.1
