@@ -4,6 +4,7 @@ services:
     build: .
     volumes:
       - $PWD:/workspace
+    image: nlp-japanese
     container_name: nlp-recipes-ja
     working_dir: /workspace
     ports:
