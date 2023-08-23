@@ -1,13 +1,13 @@
 version: "3"
 services:
-  test:
+  nlp-recipes:
     build: .
     volumes:
-      - $PWD:/working
+      - $PWD:/workspace
     container_name: nlp-recipes-ja
-    working_dir: /working
+    working_dir: /workspace
     ports:
       - 8888:8888
     environment:
-      - PYTHONPATH=/working
+      - PYTHONPATH=/workspace
     tty: true
