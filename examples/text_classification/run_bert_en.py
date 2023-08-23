@@ -5,8 +5,10 @@ from pathlib import Path
 import hydra
 import mlflow
 import numpy as np
+import torch
 from datasets import load_dataset
 from omegaconf import DictConfig, OmegaConf
+from sklearn.metrics import roc_auc_score
 from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
@@ -37,9 +39,13 @@ def preprocess_text_classification(
 
 def compute_accuracy(eval_pred: tuple[np.ndarray, np.ndarray]) -> dict[str, float]:
     """予測ラベルと正解ラベルから正解率を計算"""
+    softmax = torch.nn.Softmax(1)
     predictions, labels = eval_pred
+    outputs = softmax(torch.Tensor(predictions))
+    proba = outputs[:, 1]
     predictions = np.argmax(predictions, axis=1)
-    return {"accuracy": (predictions == labels).mean()}
+    auc = roc_auc_score(labels, proba)
+    return {"accuracy": (predictions == labels).mean(), "auc": auc}
 
 
 @hydra.main(version_base=None, config_path="conf", config_name="config")
