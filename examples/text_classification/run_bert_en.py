@@ -56,7 +56,10 @@ def main(cfg: DictConfig):
 
     # dataset
     train_dataset = load_dataset("imdb", split="train").select([i for i in range(1000)])
-    valid_dataset = load_dataset("imdb", split="test").select([i for i in range(1000)])
+    valid_dataset = load_dataset("imdb", split="train").select(
+        [i for i in range(1000, 2000)]
+    )
+    test_dataset = load_dataset("imdb", split="test").select([i for i in range(1000)])
 
     # preprocessing
     model_name = str(cfg.model_name)
@@ -68,6 +71,10 @@ def main(cfg: DictConfig):
     encoded_valid_dataset = valid_dataset.map(
         lambda example: preprocess_text_classification(example, tokenizer),
         remove_columns=valid_dataset.column_names,
+    )
+    encoded_test_dataset = test_dataset.map(
+        lambda example: preprocess_text_classification(example, tokenizer),
+        remove_columns=test_dataset.column_names,
     )
 
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
@@ -87,9 +94,10 @@ def main(cfg: DictConfig):
     trainer.train()
 
     # evaluation
-    train_metrics = trainer.evaluate(encoded_train_dataset)
+    train_metrics = trainer.evaluate(encoded_train_dataset, metric_key_prefix="train")
     eval_metrics = trainer.evaluate(encoded_valid_dataset)
-    mlflow_metrics = train_metrics | eval_metrics
+    test_metrics = trainer.evaluate(encoded_test_dataset, metric_key_prefix="test")
+    mlflow_metrics = train_metrics | eval_metrics | test_metrics
 
     # save results
     with mlflow.start_run():
