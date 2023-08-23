@@ -38,7 +38,7 @@ def preprocess_text_classification(
     return encoded_example
 
 
-def compute_accuracy(eval_pred: tuple[np.ndarray, np.ndarray]) -> dict[str, float]:
+def compute_metrics(eval_pred: tuple[np.ndarray, np.ndarray]) -> dict[str, float]:
     """予測ラベルと正解ラベルから正解率を計算"""
     softmax = torch.nn.Softmax(1)
     predictions, labels = eval_pred
@@ -96,7 +96,7 @@ def main(cfg: DictConfig):
         eval_dataset=encoded_valid_dataset,
         data_collator=data_collator,
         args=training_args,
-        compute_metrics=compute_accuracy,
+        compute_metrics=compute_metrics,
     )
 
     trainer.train()
