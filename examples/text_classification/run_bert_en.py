@@ -1,3 +1,4 @@
+import random
 import sys
 import tempfile
 from pathlib import Path
@@ -51,6 +52,7 @@ def compute_accuracy(eval_pred: tuple[np.ndarray, np.ndarray]) -> dict[str, floa
 @hydra.main(version_base=None, config_path="conf", config_name="config")
 def main(cfg: DictConfig):
     set_seed(cfg.seed)
+    random.seed(cfg.seed)
 
     # mlflow setting
     mlflow_tags, mlflow_params, mlflow_metrics = dict(), dict(), dict()
@@ -60,11 +62,12 @@ def main(cfg: DictConfig):
     mlflow.set_experiment(cfg.experiment_name)
 
     # dataset
-    train_dataset = load_dataset("imdb", split="train").select([i for i in range(1000)])
-    valid_dataset = load_dataset("imdb", split="train").select(
-        [i for i in range(1000, 2000)]
-    )
-    test_dataset = load_dataset("imdb", split="test").select([i for i in range(1000)])
+    indice = [i for i in range(25000)]
+    random.shuffle(indice)
+    imdb = load_dataset("imdb")
+    train_dataset = imdb["train"].select(indice[:3000])
+    valid_dataset = imdb["train"].select(indice[3000:6000])
+    test_dataset = imdb["test"].select(indice[:3000])
 
     # preprocessing
     model_name = str(cfg.model_name)
