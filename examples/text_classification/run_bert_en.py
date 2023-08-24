@@ -117,21 +117,20 @@ def main(cfg: DictConfig):
     mlflow_metrics = train_metrics | eval_metrics | test_metrics
 
     # save results
-    with mlflow.start_run():
-        mlflow.set_tags(mlflow_tags)
-        mlflow.log_params(mlflow_params)
-        log_all_params(cfg)
-        mlflow.log_metrics(mlflow_metrics)
-        mlflow.log_artifacts(mlflow_tmp_folder)
-        components = {
-            "model": model,
-            "tokenizer": tokenizer,
-        }
-        mlflow.transformers.log_model(
-            transformers_model=components,
-            artifact_path="transformers_model",
-        )
-        tmp_folder.cleanup()
+    mlflow.set_tags(mlflow_tags)
+    mlflow.log_params(mlflow_params)
+    log_all_params(cfg)
+    mlflow.log_metrics(mlflow_metrics)
+    mlflow.log_artifacts(mlflow_tmp_folder)
+    components = {
+        "model": model,
+        "tokenizer": tokenizer,
+    }
+    mlflow.transformers.log_model(
+        transformers_model=components,
+        artifact_path="transformers_model",
+    )
+    tmp_folder.cleanup()
 
 
 if __name__ == "__main__":
