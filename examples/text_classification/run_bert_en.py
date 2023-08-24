@@ -9,7 +9,7 @@ import numpy as np
 import torch
 from datasets import load_dataset
 from omegaconf import DictConfig, OmegaConf
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import precision_recall_fscore_support, roc_auc_score
 from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
@@ -45,8 +45,17 @@ def compute_metrics(eval_pred: tuple[np.ndarray, np.ndarray]) -> dict[str, float
     outputs = softmax(torch.Tensor(predictions))
     proba = outputs[:, 1]
     predictions = np.argmax(predictions, axis=1)
+    precision, recall, f1, _ = precision_recall_fscore_support(
+        labels, predictions, average="binary", zero_division=0
+    )
     auc = roc_auc_score(labels, proba)
-    return {"accuracy": (predictions == labels).mean(), "auc": auc}
+    return {
+        "accuracy": (predictions == labels).mean(),
+        "f1": f1,
+        "precision": precision,
+        "recall": recall,
+        "auc": auc,
+    }
 
 
 @hydra.main(version_base=None, config_path="conf", config_name="config")
