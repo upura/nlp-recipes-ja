@@ -128,7 +128,7 @@ def main(cfg: DictConfig):
     }
     mlflow.transformers.log_model(
         transformers_model=components,
-        artifact_path="transformers_model",
+        artifact_path="model_transformers",
     )
     tmp_folder.cleanup()
 
